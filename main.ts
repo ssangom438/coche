@@ -1,33 +1,36 @@
 radio.onReceivedNumber(function (receivedNumber) {
-    if (receivedNumber == 1) {
+    while (receivedNumber == 1) {
         maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CW, 200)
+        basic.showLeds(`
+            . . # . .
+            . . . # .
+            # # # . #
+            . . . # .
+            . . # . .
+            `)
+        maqueen.motorStop(maqueen.Motors.M1)
     }
-    if (receivedNumber == 2) {
+    basic.showIcon(IconNames.Yes)
+    while (receivedNumber == 2) {
         maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CW, 200)
+        maqueen.motorStop(maqueen.Motors.M2)
+        basic.showLeds(`
+            . . # . .
+            . # . . .
+            # . # # #
+            . # . . .
+            . . # . .
+            `)
     }
     if (receivedNumber == 3) {
         if (direccion == 0) {
-            direccion = 1
-        }
-        if (direccion == 1) {
-            direccion = 2
-        }
-        if (direccion == 2) {
-            direccion = 0
+            maqueen.motorRun(maqueen.Motors.All, maqueen.Dir.CW, 200)
         }
     }
 })
 let direccion = 0
-direccion = 1
-radio.setGroup(130)
+radio.sendNumber(4)
+direccion = 0
 basic.forever(function () {
-    if (direccion == 0) {
-        maqueen.motorRun(maqueen.Motors.All, maqueen.Dir.CW, 200)
-    }
-    if (direccion == 2) {
-        maqueen.motorRun(maqueen.Motors.All, maqueen.Dir.CCW, 200)
-    }
-    if (direccion == 1) {
-        maqueen.motorStop(maqueen.Motors.All)
-    }
+    radio.setGroup(130)
 })
